@@ -35,4 +35,8 @@ jobs:
       - name: Smoke test the container
         run: |
           docker run -d --name app -p 8000:8000 expense-tracker:ci
-          curl --fail --retry 5 --retry-connrefused --retry-delay 1 http://localhost:8000/health
+          curl --fail --retry 10 --retry-delay 1 --retry-connrefused --retry-all-errors http://localhost:8000/health
+
+      - name: Show container logs on failure
+        if: failure()
+        run: docker logs app
