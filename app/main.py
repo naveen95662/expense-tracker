@@ -4,15 +4,18 @@ from fastapi import Depends, FastAPI, HTTPException, Query, status
 
 from app.logging_middleware import JsonRequestLoggingMiddleware
 from app.models import Expense, ExpenseCreate, ExpenseSummary
-from app.store import ExpenseStore, InMemoryExpenseStore
+from app.store import ExpenseStore, create_store
 
 app = FastAPI(title="Expense Tracker API")
 app.add_middleware(JsonRequestLoggingMiddleware)
 
-_store = InMemoryExpenseStore()
+_store: ExpenseStore | None = None
 
 
 def get_store() -> ExpenseStore:
+    global _store
+    if _store is None:
+        _store = create_store()
     return _store
 
 
