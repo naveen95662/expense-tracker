@@ -23,3 +23,14 @@ output "ecs_task_role_arn" {
   description = "IAM role the running app uses to access DynamoDB."
   value       = aws_iam_role.ecs_task.arn
 }
+
+# Cluster and service names for later scale-up or console lookup.
+output "ecs_cluster_name" {
+  description = "ECS cluster that runs the expense API."
+  value       = aws_ecs_cluster.expense_tracker.name
+}
+
+output "ecs_service_name" {
+  description = "ECS service (desired_count 0 until you scale it)."
+  value       = aws_ecs_service.app.name
+}
